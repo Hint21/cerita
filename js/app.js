@@ -570,15 +570,16 @@
     setTimeout(function () {
       var url = "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(WHATSAPP_MESSAGE);
       try {
-        var a = document.createElement("a");
-        a.href = url;
-        a.target = "_blank";
-        a.rel = "noopener noreferrer";
-        document.body.appendChild(a);
-        a.click();
-        setTimeout(function () { try { document.body.removeChild(a); } catch (e) {} }, 200);
+        // location.href di tab yang sama agar OS membuka app WhatsApp (bukan tab browser)
+        window.location.href = url;
       } catch (e) {
-        try { window.location.href = url; } catch (e2) {}
+        try {
+          var a = document.createElement("a");
+          a.href = url;
+          document.body.appendChild(a);
+          a.click();
+          setTimeout(function () { try { document.body.removeChild(a); } catch (e2) {} }, 200);
+        } catch (e3) {}
       }
     }, 1000);
   }
