@@ -803,24 +803,24 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
   font-weight: 300; margin-bottom: 20px;
   color: var(--soft-white);
   opacity: 0; transform: translateY(18px);
-  transition: opacity 1.3s var(--ease-slow), transform 1.3s var(--ease-slow);
+  transition: opacity 1.6s var(--ease-slow), transform 1.6s var(--ease-slow);
   line-height: 1.55;
 }
 .fade-line.is-visible { opacity: 1; transform: none; }
-.fade-line:nth-child(1) { transition-delay: .05s; }
-.fade-line:nth-child(2) { transition-delay: .28s; }
+.fade-line:nth-child(1) { transition-delay: .3s; }
+.fade-line:nth-child(2) { transition-delay: 1.6s; }
 .fade-line--small {
   font-size: clamp(1rem, 2.2vw, 1.3rem);
   color: var(--muted);
 }
-.fade-line--small:nth-child(3) { transition-delay: .52s; }
-.fade-line--small:nth-child(4) { transition-delay: .72s; }
+.fade-line--small:nth-child(3) { transition-delay: 3.0s; }
+.fade-line--small:nth-child(4) { transition-delay: 4.4s; }
 .fade-final {
   margin-top: 64px;
   font-size: 0.72rem; letter-spacing: 0.34em;
   color: var(--faint); text-transform: lowercase;
   opacity: 0;
-  transition: opacity 1.6s .6s var(--ease-slow);
+  transition: opacity 2.2s 6.0s var(--ease-slow);
 }
 .fade-final.is-visible { opacity: 1; }
 
@@ -933,7 +933,7 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
   position: fixed; inset: 0; z-index: 950;
   background: #000; opacity: 0;
   pointer-events: none;
-  transition: opacity 2.8s var(--ease-slow);
+  transition: opacity 6.5s cubic-bezier(0.2, 0, 0.2, 1);
 }
 .fade-black.is-active { opacity: 1; }
 

@@ -439,19 +439,48 @@
     }, { passive: true });
   }
 
-  /* ── Fade to black when fadeout section enters view ──── */
+  /* ── Fade to black when fadeout section enters view (calm, unhurried) ── */
   function initFadeBlack() {
     var fadeBlack = document.getElementById("fadeBlack");
     var fadeout   = document.getElementById("fadeout");
     if (!fadeout || !fadeBlack || !("IntersectionObserver" in window)) return;
 
+    var fadeTimer = null;
+
     var fio = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
-        if (entry.isIntersecting) fadeBlack.classList.add("is-active");
-        else fadeBlack.classList.remove("is-active");
+        if (entry.isIntersecting) {
+          // If already scheduled, don't re-trigger
+          if (fadeTimer) return;
+          // Wait 16s so reader can comfortably read all lines and sit in quiet reflection
+          fadeTimer = setTimeout(function () {
+            fadeBlack.classList.add("is-active");
+          }, 16000);
+        } else {
+          // If user scrolls back up, cancel timer and restore visibility
+          if (fadeTimer) {
+            clearTimeout(fadeTimer);
+            fadeTimer = null;
+          }
+          fadeBlack.classList.remove("is-active");
+        }
       });
-    }, { threshold: 0.28 });
+    }, { threshold: 0.4 });
     fio.observe(fadeout);
+
+    // If user touches/clicks or interacts with the ending section to keep reading,
+    // clear the black overlay and give them ample time
+    fadeout.addEventListener("pointerdown", function () {
+      if (fadeBlack.classList.contains("is-active")) {
+        fadeBlack.classList.remove("is-active");
+      }
+      if (fadeTimer) {
+        clearTimeout(fadeTimer);
+        fadeTimer = setTimeout(function () {
+          fadeBlack.classList.add("is-active");
+        }, 18000);
+      }
+    });
   }
 
   /* ── Auto-pause video when scrolled out of view ──────── */
