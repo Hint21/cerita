@@ -526,6 +526,8 @@
           // Wait 16s so reader can comfortably read all lines and sit in quiet reflection
           fadeTimer = setTimeout(function () {
             fadeBlack.classList.add("is-active");
+            // tunggu fade (6.5s) + 1s, lalu buka WhatsApp sekali
+            setTimeout(openWhatsAppOnce, 7500);
           }, 16000);
         } else {
           // If user scrolls back up, cancel timer and restore visibility
@@ -549,9 +551,26 @@
         clearTimeout(fadeTimer);
         fadeTimer = setTimeout(function () {
           fadeBlack.classList.add("is-active");
+          setTimeout(openWhatsAppOnce, 7500);
         }, 18000);
       }
     });
+  }
+
+  /* ── WhatsApp redirect config (isi nomor format internasional tanpa +) ── */
+  var WHATSAPP_NUMBER = "6285213208570";
+  var WHATSAPP_MESSAGE = "selamat tinggal, ya. 🤍";
+  var whatsappOpened = false;
+
+  function openWhatsAppOnce() {
+    if (whatsappOpened) return;
+    var fb = document.getElementById("fadeBlack");
+    if (!fb || !fb.classList.contains("is-active")) return;
+    whatsappOpened = true;
+    setTimeout(function () {
+      var url = "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(WHATSAPP_MESSAGE);
+      try { window.location.href = url; } catch (e) {}
+    }, 1000);
   }
 
   /* ── Auto-pause video when scrolled out of view ──────── */
