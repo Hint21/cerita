@@ -155,7 +155,6 @@
       "kalau nanti aku udah bukan jadi orang yang kamu sayang lagi, kamu tetap hubungin aku yaa kalau perlu bantuan, bakal aku usahain bantu kok.",
       "kamu tetap semangat yaa ngejar impian kamu, aku doain kamu bisa masuk ke univ yang kamu impikan, bisa masuk ke jurusan yang kamu suka.",
       "kamu udah mau lulus sayang, yang semangat yaa belajarnya. nanti kuliahnya juga yang semangat, jangan malas malasan mulu, ngeluh boleh, capek boleh, istirahat juga boleh, asal jangan nyerah dan tugasnya tetap dikerjain.",
-      "aku juga doain kamu bisa dapetin semua yang kamu mau.",
       "mudah mudahan nanti kamu nemuin cowok yang benar benar bisa ngejauhin hal hal yang nggak kamu suka, yang bisa lebih ngerti kamu dan bisa bikin kamu lebih bahagia.",
       "maaf yaa sayang atas semua yang udah aku lakuin, maaf udah bikin kamu sakit hati, maaf udah bikin kamu capek dan harus berusaha memaklumi aku selama ini.",
       "aku benar benar sayang kamu kok.",
