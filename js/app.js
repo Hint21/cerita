@@ -84,10 +84,11 @@
     .then(function (r) { return r.json(); })
     .then(function (data) {
       manifest = data || [];
-      // img25 & img26 are near-duplicates from the same session; keep img25.
-      photoList = manifest.filter(function (m) { return m.kind === "photo" && m.file !== "img26.webp"; });
+      // All 31 photos are used (including img26); see KENANGAN section.
+      photoList = manifest.filter(function (m) { return m.kind === "photo"; });
       renderSmall();
       renderYou();
+      renderKenangan();
       renderAwalFinal();
       renderLetter();
       initReveals();
@@ -116,7 +117,7 @@
     var list = document.getElementById("smallList");
     if (!list) return;
     list.innerHTML = "";
-    var shots = manifest.filter(function (m) { return m.kind === "shot"; }).slice(0, 8);
+    var shots = manifest.filter(function (m) { return m.kind === "shot"; });
     shots.forEach(function (m) {
       var wrap = el("div", { "class": "small-item" });
       var img  = el("img", {
@@ -136,7 +137,9 @@
     if (!gal) return;
     gal.innerHTML = "";
 
-    var photos = photoList;
+    // TENTANG KAMU: curated cinematic subset (not all photos).
+    var curatedIndices = [0, 2, 5, 9, 12, 15, 18, 21, 24, 27, 29, 30];
+    var photos = curatedIndices.map(function (i) { return photoList[i]; }).filter(Boolean);
     if (!photos.length) return;
 
     // Editorial layout pattern rhythm:
@@ -171,8 +174,9 @@
       var block = el("div", { "class": pat.cls });
 
       for (var i = 0; i < count; i++) {
-        (function (globalIdx) {
-          var m = photos[globalIdx];
+        (function (k) {
+          var globalIdx = curatedIndices[k];
+          var m = photos[k];
           var wrap = el("div", { "class": "you-item" });
           var img = el("img", {
             src: "assets/images/" + m.file,
@@ -240,6 +244,42 @@
       var p = document.createElement("p");
       p.textContent = text;
       letterEl.appendChild(p);
+    });
+  }
+
+  /* ── Render: kenangan (all 31 photos, full archive) ───── */
+  function renderKenangan() {
+    var gal = document.getElementById("kenanganGallery");
+    if (!gal) return;
+    gal.innerHTML = "";
+    if (!photoList.length) return;
+
+    photoList.forEach(function (m, globalIdx) {
+      var wrap = el("div", { "class": "kenangan-item" });
+      var img = el("img", {
+        src: "assets/images/" + m.file,
+        alt: "",
+        loading: "lazy",
+        decoding: "async"
+      });
+      wrap.appendChild(img);
+      wrap.setAttribute("role", "button");
+      wrap.setAttribute("tabindex", "0");
+      wrap.setAttribute("aria-label", "lihat foto " + (globalIdx + 1));
+
+      wrap.addEventListener("click", function () {
+        openViewer(globalIdx);
+      });
+      wrap.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          openViewer(globalIdx);
+        }
+      });
+
+      gal.appendChild(wrap);
+      if (io) io.observe(wrap);
+      else wrap.classList.add("is-visible");
     });
   }
 
@@ -407,6 +447,7 @@
     revealAll(".fade-final");
     revealAll(".small-item");
     revealAll(".you-item");
+    revealAll(".kenangan-item");
     revealAll(".img-single--final img");
     revealAll(".reveal");
 
