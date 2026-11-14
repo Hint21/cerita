@@ -80,22 +80,48 @@
   var manifest = [];
   var photoList = [];
 
+  /* ── Asset loading with fallback (works on file:// too) ───── */
+  function buildFallbackManifest() {
+    var list = [];
+    list.push({ file: "img01.webp", kind: "roblox", w: 1442, h: 736 });
+    for (var i = 2; i <= 32; i++) {
+      list.push({ file: "img" + (i < 10 ? "0" + i : i) + ".webp", kind: "photo", w: 0, h: 0 });
+    }
+    for (var j = 33; j <= 44; j++) {
+      list.push({ file: "img" + j + ".webp", kind: "shot", w: 0, h: 0 });
+    }
+    return list;
+  }
+
+  function applyManifest(data) {
+    manifest = (data && data.length) ? data : buildFallbackManifest();
+    // All 31 photos are used (including img26); see KENANGAN section.
+    photoList = manifest.filter(function (m) { return m.kind === "photo"; });
+    console.log("[assets] " + ((data && data.length) ? "manifest loaded" : "fallback used") + ": " + photoList.length + " photos");
+  }
+
+  function renderAll() {
+    renderSmall();
+    renderYou();
+    renderKenangan();
+    renderAwalFinal();
+    renderLetter();
+    initReveals();
+  }
+
   fetch("assets/images/manifest.json")
-    .then(function (r) { return r.json(); })
-    .then(function (data) {
-      manifest = data || [];
-      // All 31 photos are used (including img26); see KENANGAN section.
-      photoList = manifest.filter(function (m) { return m.kind === "photo"; });
-      renderSmall();
-      renderYou();
-      renderKenangan();
-      renderAwalFinal();
-      renderLetter();
-      initReveals();
+    .then(function (r) {
+      if (!r.ok) throw new Error("manifest http " + r.status);
+      return r.json();
     })
-    .catch(function () {
-      renderLetter();
-      initReveals();
+    .then(function (data) {
+      applyManifest(data);
+      renderAll();
+    })
+    .catch(function (err) {
+      console.warn("[assets] manifest unavailable, using fallback:", err && err.message ? err.message : err);
+      applyManifest(null);
+      renderAll();
     });
 
   /* ── DOM helpers ─────────────────────────────────────── */
