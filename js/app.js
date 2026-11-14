@@ -538,7 +538,7 @@
           fadeBlack.classList.remove("is-active");
         }
       });
-    }, { threshold: 0.4 });
+    }, { threshold: 0.25 });
     fio.observe(fadeout);
 
     // If user touches/clicks or interacts with the ending section to keep reading,
@@ -569,7 +569,17 @@
     whatsappOpened = true;
     setTimeout(function () {
       var url = "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(WHATSAPP_MESSAGE);
-      try { window.location.href = url; } catch (e) {}
+      try {
+        var a = document.createElement("a");
+        a.href = url;
+        a.target = "_blank";
+        a.rel = "noopener noreferrer";
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(function () { try { document.body.removeChild(a); } catch (e) {} }, 200);
+      } catch (e) {
+        try { window.location.href = url; } catch (e2) {}
+      }
     }, 1000);
   }
 
