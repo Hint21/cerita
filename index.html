@@ -13,6 +13,7 @@
 </head>
 <body>
 
+  <!-- PASSWORD GATE -->
   <div class="gate" id="gate" role="dialog" aria-modal="true" aria-label="akses">
     <div class="gate__orb gate__orb--1" aria-hidden="true"></div>
     <div class="gate__orb gate__orb--2" aria-hidden="true"></div>
@@ -20,14 +21,18 @@
       <p class="gate__title">sebuah cerita<br>yang pernah ada</p>
       <p class="gate__hint">masukkan tanggal yang kita mulai.</p>
       <form class="gate__form" id="gateForm" autocomplete="off">
-        <input class="gate__input" id="gateInput" type="password" inputmode="numeric" maxlength="8" placeholder="ddmmyyyy" aria-label="password" autofocus>
+        <input class="gate__input" id="gateInput" type="password" inputmode="numeric"
+               maxlength="8" placeholder="ddmmyyyy" aria-label="password" autofocus>
         <button class="gate__btn" type="submit">masuk</button>
       </form>
       <p class="gate__err" id="gateErr" aria-live="polite"></p>
     </div>
   </div>
 
+  <!-- MAIN SITE -->
   <div class="site" id="site" hidden>
+
+    <!-- ambient background orbs (fixed) -->
     <div class="ambient" aria-hidden="true">
       <span class="ambient__orb ambient__orb--a"></span>
       <span class="ambient__orb ambient__orb--b"></span>
@@ -36,8 +41,9 @@
 
     <main id="main">
 
-      <!-- OPENING -->
+      <!-- ══ OPENING ══════════════════════════════════════════ -->
       <section class="scene scene--opening" id="opening" data-scene="opening">
+        <div class="opening-glow" aria-hidden="true"></div>
         <div class="scene__inner scene__inner--center">
           <p class="opening__line opening__line--1">sebuah cerita yang pernah ada</p>
           <p class="opening__line opening__line--2">hai, Alifah.</p>
@@ -46,25 +52,25 @@
         </div>
       </section>
 
-      <!-- AWAL CERITA -->
+      <!-- ══ AWAL CERITA ══════════════════════════════════════ -->
       <section class="scene scene--awal" id="awal" data-scene="awal">
-        <div class="scene__inner">
-          <p class="big-date big-date--bg" aria-hidden="true">06.05.2026</p>
-          <p class="date">06.05.2026</p>
+        <div class="scene__inner scene__inner--wide">
+          <p class="big-date--bg" aria-hidden="true">06.05.2026</p>
+          <p class="date reveal">06.05.2026</p>
           <div class="awal__grid">
             <div class="awal__media" id="img-awal"></div>
             <div class="awal__text">
-              <p class="text">awalnya kita cuma dua orang yang kebetulan ketemu di Roblox.</p>
-              <p class="text text--soft">username kamu: liifaw.</p>
+              <p class="text reveal">awalnya kita cuma dua orang yang kebetulan ketemu di Roblox.</p>
+              <p class="text text--soft reveal">username kamu: liifaw.</p>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- TIMELINE -->
+      <!-- ══ TIMELINE ═════════════════════════════════════════ -->
       <section class="scene scene--timeline" id="timeline" data-scene="timeline">
         <div class="scene__inner">
-          <p class="section-kicker">perjalanan</p>
+          <p class="section-kicker reveal">perjalanan</p>
           <ul class="timeline">
             <li class="timeline__item">
               <span class="timeline__node"></span>
@@ -90,29 +96,29 @@
         </div>
       </section>
 
-      <!-- HAL-HAL KECIL -->
+      <!-- ══ HAL-HAL KECIL ════════════════════════════════════ -->
       <section class="scene scene--small" id="small" data-scene="small">
-        <div class="scene__inner">
-          <p class="section-kicker">kenangan</p>
-          <p class="section-title">hal-hal kecil</p>
-          <p class="text text--soft">yang mungkin kelihatannya biasa aja, tapi buat aku tetap berarti.</p>
+        <div class="scene__inner scene__inner--wide">
+          <p class="section-kicker reveal">kenangan</p>
+          <p class="section-title reveal">hal-hal kecil</p>
+          <p class="text text--soft reveal">yang mungkin kelihatannya biasa aja, tapi buat aku tetap berarti.</p>
           <div class="small-list" id="smallList"></div>
         </div>
       </section>
 
-      <!-- TENTANG KAMU -->
+      <!-- ══ TENTANG KAMU ═════════════════════════════════════ -->
       <section class="scene scene--you" id="you" data-scene="you">
-        <div class="scene__inner">
-          <p class="section-kicker">untuk kamu</p>
-          <p class="section-title">tentang kamu</p>
+        <div class="scene__inner scene__inner--wide">
+          <p class="section-kicker reveal">untuk kamu</p>
+          <p class="section-title reveal">tentang kamu</p>
           <div class="you-gallery" id="youGallery"></div>
         </div>
       </section>
 
-      <!-- TENTANG AKU -->
+      <!-- ══ TENTANG AKU ══════════════════════════════════════ -->
       <section class="scene scene--me" id="me" data-scene="me">
         <div class="scene__inner scene__inner--narrow">
-          <p class="section-kicker">tentang aku</p>
+          <p class="section-kicker reveal">tentang aku</p>
           <div class="me-lines">
             <p class="me-line">aku mengakui kesalahan.</p>
             <p class="me-line">aku nggak mau cari alasan.</p>
@@ -126,15 +132,15 @@
         </div>
       </section>
 
-      <!-- SURAT -->
+      <!-- ══ SURAT ════════════════════════════════════════════ -->
       <section class="scene scene--letter" id="letter" data-scene="letter">
         <div class="scene__inner scene__inner--letter">
-          <p class="section-kicker">yang tidak sempat aku katakan</p>
+          <p class="section-kicker reveal">yang tidak sempat aku katakan</p>
           <div class="letter" id="letterText"></div>
         </div>
       </section>
 
-      <!-- TERIMA KASIH -->
+      <!-- ══ TERIMA KASIH ═════════════════════════════════════ -->
       <section class="scene scene--thanks" id="thanks" data-scene="thanks">
         <div class="scene__inner scene__inner--center">
           <div class="thanks-lines">
@@ -146,17 +152,17 @@
         </div>
       </section>
 
-      <!-- HARI KETIKA CERITA INI SELESAI -->
+      <!-- ══ 15.11.2026 ═══════════════════════════════════════ -->
       <section class="scene scene--endday" id="endday" data-scene="endday">
         <div class="scene__inner scene__inner--center">
           <p class="end-date" aria-hidden="true">15.11.2026</p>
-          <p class="date">15.11.2026</p>
-          <p class="text">hari ketika cerita ini selesai.</p>
+          <p class="date reveal">15.11.2026</p>
+          <p class="text reveal">hari ketika cerita ini selesai.</p>
           <div class="img-single img-single--final" id="img-final"></div>
         </div>
       </section>
 
-      <!-- FADE OUT -->
+      <!-- ══ FADE OUT / ENDING ════════════════════════════════ -->
       <section class="scene scene--fadeout" id="fadeout" data-scene="fadeout">
         <div class="scene__inner scene__inner--center">
           <p class="fade-line">aku nggak tahu hidup bakal bawa kita ke mana setelah ini.</p>
@@ -170,11 +176,13 @@
     </main>
   </div>
 
+  <!-- PHOTO VIEWER -->
   <div class="viewer" id="viewer" hidden>
     <button class="viewer__close" id="viewerClose" type="button" aria-label="tutup">✕</button>
     <img class="viewer__img" id="viewerImg" alt="">
   </div>
 
+  <!-- FADE TO BLACK -->
   <div class="fade-black" id="fadeBlack" aria-hidden="true"></div>
 
   <script src="js/vendor/lenis.min.js"></script>

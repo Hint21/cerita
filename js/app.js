@@ -2,29 +2,36 @@
   "use strict";
 
   var PASSWORD = "29072026";
-  var gate = document.getElementById("gate");
+  var gate     = document.getElementById("gate");
   var gateForm = document.getElementById("gateForm");
-  var gateInput = document.getElementById("gateInput");
-  var gateErr = document.getElementById("gateErr");
-  var site = document.getElementById("site");
+  var gateInput= document.getElementById("gateInput");
+  var gateErr  = document.getElementById("gateErr");
+  var site     = document.getElementById("site");
 
+  /* ── sessionStorage helpers ─────────────────────────── */
   function readSession(key) {
     try { return sessionStorage.getItem(key); } catch (e) { return null; }
   }
   function writeSession(key, val) {
-    try { sessionStorage.setItem(key, val); } catch (e) {}
+    try { sessionStorage.setItem(key, val); } catch (e) {} // eslint-disable-line no-empty
   }
 
+  /* ── unlock ─────────────────────────────────────────── */
   function unlock() {
-    if (gate) gate.style.display = "none";
+    if (gate) {
+      gate.style.transition = "opacity .8s";
+      gate.style.opacity    = "0";
+      setTimeout(function () { gate.style.display = "none"; }, 820);
+    }
     if (site) site.hidden = false;
     writeSession("entered", "1");
-    initReveals();
+    // give fonts/images a tick to settle
+    requestAnimationFrame(function () {
+      requestAnimationFrame(initReveals);
+    });
   }
 
-  if (readSession("entered") === "1") {
-    unlock();
-  }
+  if (readSession("entered") === "1") { unlock(); }
 
   if (gateForm) {
     gateForm.addEventListener("submit", function (e) {
@@ -39,19 +46,20 @@
     });
   }
 
-  // Lenis
+  /* ── Lenis smooth scroll ─────────────────────────────── */
   var lenis = null;
   if (typeof Lenis === "function") {
     try {
-      lenis = new Lenis({ duration: 1.1, smoothWheel: true, touchMultiplier: 1.3 });
-      function raf(t) { lenis.raf(t); requestAnimationFrame(raf); }
-      requestAnimationFrame(raf);
+      lenis = new Lenis({ duration: 1.15, smoothWheel: true, touchMultiplier: 1.4 });
+      (function raf(t) { lenis.raf(t); requestAnimationFrame(raf); })(0);
     } catch (e) { lenis = null; }
   }
 
   function scrollToEl(el) {
     if (!el) return;
-    if (lenis) { try { lenis.scrollTo(el, { duration: 1.2 }); return; } catch (e) {} }
+    if (lenis) {
+      try { lenis.scrollTo(el, { duration: 1.3, offset: -20 }); return; } catch (e) {}
+    }
     el.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
@@ -60,9 +68,15 @@
     btnEnter.addEventListener("click", function () {
       scrollToEl(document.getElementById("awal"));
     });
+    btnEnter.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        scrollToEl(document.getElementById("awal"));
+      }
+    });
   }
 
-  // Manifest
+  /* ── Asset manifest ──────────────────────────────────── */
   var manifest = [];
   fetch("assets/images/manifest.json")
     .then(function (r) { return r.json(); })
@@ -75,6 +89,7 @@
     })
     .catch(function () { initReveals(); });
 
+  /* ── DOM helpers ─────────────────────────────────────── */
   function el(tag, attrs) {
     var e = document.createElement(tag);
     if (attrs) Object.keys(attrs).forEach(function (k) {
@@ -84,61 +99,110 @@
     return e;
   }
 
+  /* ── Render: hal-hal kecil (screenshots → .small-item) ─ */
   function renderSmall() {
     var list = document.getElementById("smallList");
     if (!list) return;
-    manifest.filter(function (m) { return m.kind === "shot"; }).forEach(function (m) {
-      var img = el("img", { src: "assets/images/" + m.file, alt: "", loading: "lazy" });
-      list.appendChild(img);
+    var shots = manifest.filter(function (m) { return m.kind === "shot"; });
+    shots.forEach(function (m) {
+      var wrap = el("div", { "class": "small-item" });
+      var img  = el("img", {
+        src: "assets/images/" + m.file,
+        alt: "",
+        loading: "lazy"
+      });
+      wrap.appendChild(img);
+      list.appendChild(wrap);
     });
   }
 
+  /* ── Render: tentang kamu (photos → .you-item) ────────── */
   function renderYou() {
     var gal = document.getElementById("youGallery");
     if (!gal) return;
-    manifest.filter(function (m) { return m.kind === "photo"; }).forEach(function (m) {
-      var img = el("img", { src: "assets/images/" + m.file, alt: "", loading: "lazy" });
-      img.addEventListener("click", function () { openViewer(img.src); });
-      gal.appendChild(img);
+    var photos = manifest.filter(function (m) { return m.kind === "photo"; });
+    photos.forEach(function (m) {
+      var wrap = el("div", { "class": "you-item" });
+      var img  = el("img", {
+        src: "assets/images/" + m.file,
+        alt: "",
+        loading: "lazy"
+      });
+      wrap.addEventListener("click", function () { openViewer("assets/images/" + m.file); });
+      wrap.setAttribute("role", "button");
+      wrap.setAttribute("tabindex", "0");
+      wrap.setAttribute("aria-label", "lihat foto");
+      wrap.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          openViewer("assets/images/" + m.file);
+        }
+      });
+      wrap.appendChild(img);
+      gal.appendChild(wrap);
     });
   }
 
+  /* ── Render: awal (first shot) + final (img07) ───────── */
   function renderAwalFinal() {
-    var awal = document.getElementById("img-awal");
-    var final = document.getElementById("img-final");
-    var shots = manifest.filter(function (m) { return m.kind === "shot"; });
+    var awal   = document.getElementById("img-awal");
+    var final  = document.getElementById("img-final");
+    var shots  = manifest.filter(function (m) { return m.kind === "shot"; });
     var photos = manifest.filter(function (m) { return m.kind === "photo"; });
+
     if (awal && shots.length) {
-      awal.appendChild(el("img", { src: "assets/images/" + shots[0].file, alt: "", loading: "lazy" }));
+      var imgA = el("img", {
+        src: "assets/images/" + shots[0].file,
+        alt: "",
+        loading: "lazy"
+      });
+      awal.appendChild(imgA);
+      // observe for scale-in
+      if (io) io.observe(imgA);
     }
+
     if (final && photos.length) {
       var pick = photos.find(function (m) { return m.file === "img07.webp"; }) || photos[0];
-      final.appendChild(el("img", { src: "assets/images/" + pick.file, alt: "", loading: "lazy" }));
+      var imgF = el("img", {
+        src: "assets/images/" + pick.file,
+        alt: "",
+        loading: "lazy"
+      });
+      final.appendChild(imgF);
+      if (io) io.observe(imgF);
     }
   }
 
-  // Viewer
-  var viewer = document.getElementById("viewer");
-  var viewerImg = document.getElementById("viewerImg");
+  /* ── Photo viewer ────────────────────────────────────── */
+  var viewer      = document.getElementById("viewer");
+  var viewerImg   = document.getElementById("viewerImg");
   var viewerClose = document.getElementById("viewerClose");
+
   function openViewer(src) {
     if (!viewer || !viewerImg) return;
     viewerImg.src = src;
     viewer.hidden = false;
+    viewerClose.focus();
+    document.body.style.overflow = "hidden";
   }
   function closeViewer() {
-    if (viewer) viewer.hidden = true;
+    if (!viewer) return;
+    viewer.hidden = true;
     if (viewerImg) viewerImg.src = "";
+    document.body.style.overflow = "";
   }
+
   if (viewerClose) viewerClose.addEventListener("click", closeViewer);
-  if (viewer) viewer.addEventListener("click", function (e) { if (e.target === viewer) closeViewer(); });
+  if (viewer) {
+    viewer.addEventListener("click", function (e) {
+      if (e.target === viewer) closeViewer();
+    });
+  }
   document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape") {
-      if (viewer && !viewer.hidden) closeViewer();
-    }
+    if (e.key === "Escape" && viewer && !viewer.hidden) closeViewer();
   });
 
-  // Reveal system
+  /* ── Intersection Observer (reveal system) ───────────── */
   var io = null;
   if ("IntersectionObserver" in window) {
     io = new IntersectionObserver(function (entries) {
@@ -148,86 +212,79 @@
           io.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
+    }, { threshold: 0.10, rootMargin: "0px 0px -30px 0px" });
   }
+
   function revealAll(selector) {
-    var nodes = document.querySelectorAll(selector);
-    nodes.forEach(function (n) {
+    document.querySelectorAll(selector).forEach(function (n) {
       if (io) io.observe(n);
       else n.classList.add("is-visible");
     });
   }
 
+  /* ── initReveals ─────────────────────────────────────── */
   function initReveals() {
-    // opening ready
+    // opening cinematic entrance
     var opening = document.getElementById("opening");
-    if (opening) setTimeout(function () { opening.classList.add("is-ready"); }, 200);
+    if (opening) setTimeout(function () { opening.classList.add("is-ready"); }, 180);
 
-    // timeline items
     revealAll(".timeline__item");
-    // me lines
     revealAll(".me-line");
-    // letter paragraphs
     revealAll(".letter p");
-    // thanks
     revealAll(".thanks-lines p");
-    // fade lines
     revealAll(".fade-line");
     revealAll(".fade-final");
-    // small images
-    revealAll(".small-list img");
-    // you gallery
-    revealAll(".you-gallery img");
-    // generic reveal
+    revealAll(".small-item");
+    revealAll(".you-item");
+    revealAll(".img-single--final img");
     revealAll(".reveal");
+
+    initParallax();
+    initFadeBlack();
   }
 
-  // Opening scene ready on load even without unlock? site hidden until unlock; initReveals called in unlock.
+  /* ── Subtle parallax on hero + big-date ─────────────── */
+  function initParallax() {
+    // skip on mobile (< 700px) or reduced motion
+    var mq = window.matchMedia("(max-width: 700px), (prefers-reduced-motion: reduce)");
+    if (mq.matches) return;
 
-  // Letter text
-  var letterEl = document.getElementById("letterText");
-  if (letterEl) {
-    var paragraphs = [
-      "yaudah kalau emang kamu dah mutusin gitu, aku terima. ini emang salah aku yang masih belum bisa jauhin hal hal yang nggak kamu suka, wajar banget kamu marah, wajar kamu nggak suka, aku yang salah sayang. aku juga nggak mau banyak alasan lagi karena aku tau dari sisi kamu itu pasti sakit, apalagi kalau hal yang sama udah pernah kamu bilang tapi aku masih ngelakuin lagi.",
-      "maaf yaa udah bikin kamu sakit hati ama semua kelakuan aku, maaf yaa belum bisa jadi cowok yang kamu impiin, maaf juga karena selama ini kamu harus banyak maklumin aku. kamu dah baik banget kok, aku aja yang ngelunjak.",
-      "mungkin aku juga selama ini terlalu mikirin kalau aku udah jujur ama kamu, tapi aku lupa kalau jujur setelah ngelakuin sesuatu juga nggak bikin kamu jadi nggak sakit hati.",
-      "jujur berat banget buat aku nge iyain kemauan kamu ini, aku masih sayang banget ama kamu, masih pengen sama kamu juga. tapi ini bukan pertama kali kamu minta udahan, jadi daripada kamu makan hati mulu ama kelakuan aku, kayaknya emang lebih baik sampai sini aja.",
-      "aku nggak mau juga kalau setiap ada masalah kamu harus sampai ngerasa capek dan sakit hati terus. mungkin emang aku belum bisa jadi orang yang kamu butuhin.",
-      "aku juga minta maaf kalau selama sama aku kamu pernah ngerasa sendirian, ngerasa nggak didengerin, atau ngerasa harus ngejelasin hal yang sama berkali kali.",
-      "aku sadar masih banyak kurangnya aku dan mungkin selama ini aku nggak sadar kalau beberapa hal yang aku anggap sepele ternyata bisa bikin kamu sakit hati.",
-      "makasih yaa atas semua hal yang udah kamu kasih ke aku.",
-      "makasih karena udah nemenin aku selama 4 bulan pdkt dan 3 bulan pacaran ini.",
-      "aku nggak nyangka yang awalnya cuman temen roblox, yang awalnya kamu manggil ayah sampai akhirnya manggil sayang. lucu yaa kalau diingat ingat.",
-      "siapa sih yang bakal nyangka orang yang awalnya aku kenal nggak sengaja di roblox, yang aku kira paling cuman ketemu di satu kali main doang ternyata bisa jadi orang yang benar benar aku sayang.",
-      "banyak banget hal kecil dari kita yang bakal aku inget nanti, dari ngobrol, main bareng, telfonan, cerita cerita, sampai hal hal random yang mungkin kelihatannya biasa aja tapi buat aku tetap berarti.",
-      "aku nggak mau rasa kangen aku malah jadi alasan buat maksa kamu tetap bertahan.",
-      "kalau nanti aku udah bukan jadi orang yang kamu sayang lagi, kamu tetap hubungin aku yaa kalau perlu bantuan, bakal aku usahain bantu kok.",
-      "kamu tetap semangat yaa ngejar impian kamu, aku doain kamu bisa masuk ke univ yang kamu impikan, bisa masuk ke jurusan yang kamu suka.",
-      "kamu udah mau lulus sayang, yang semangat yaa belajarnya. nanti kuliahnya juga yang semangat, jangan malas malasan mulu, ngeluh boleh, capek boleh, istirahat juga boleh, asal jangan nyerah dan tugasnya tetap dikerjain.",
-      "mudah mudahan nanti kamu nemuin cowok yang benar benar bisa ngejauhin hal hal yang nggak kamu suka, yang bisa lebih ngerti kamu dan bisa bikin kamu lebih bahagia.",
-      "maaf yaa sayang atas semua yang udah aku lakuin, maaf udah bikin kamu sakit hati, maaf udah bikin kamu capek dan harus berusaha memaklumi aku selama ini.",
-      "aku benar benar sayang kamu kok.",
-      "makasih yaa udah pernah nemenin aku, udah pernah milih aku, dan udah pernah jadi bagian dari hidup aku.",
-      "jaga diri baik baik yaa sayang, semoga kamu baik baik aja dan semoga semua yang kamu impiin bisa tercapai.",
-      "makasih buat semuanya 🤍"
-    ];
-    paragraphs.forEach(function (t) {
-      var p = document.createElement("p");
-      p.textContent = t;
-      letterEl.appendChild(p);
-    });
+    var targets = document.querySelectorAll("[data-parallax]");
+    if (!targets.length) return;
+
+    var ticking = false;
+    window.addEventListener("scroll", function () {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(function () {
+        var sy = window.scrollY;
+        targets.forEach(function (el) {
+          var speed  = parseFloat(el.getAttribute("data-parallax")) || 0.08;
+          var rect   = el.parentElement.getBoundingClientRect();
+          var center = rect.top + rect.height / 2;
+          var offset = (window.innerHeight / 2 - center) * speed;
+          // clamp to ±30px
+          offset = Math.max(-30, Math.min(30, offset));
+          el.style.transform = "translateY(" + offset + "px)";
+        });
+        ticking = false;
+      });
+    }, { passive: true });
   }
 
-  // Fade to black on fadeout section
-  var fadeBlack = document.getElementById("fadeBlack");
-  var fadeout = document.getElementById("fadeout");
-  if (fadeout && fadeBlack && "IntersectionObserver" in window) {
+  /* ── Fade to black when fadeout section enters view ──── */
+  function initFadeBlack() {
+    var fadeBlack = document.getElementById("fadeBlack");
+    var fadeout   = document.getElementById("fadeout");
+    if (!fadeout || !fadeBlack || !("IntersectionObserver" in window)) return;
+
     var fio = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (entry.isIntersecting) fadeBlack.classList.add("is-active");
         else fadeBlack.classList.remove("is-active");
       });
-    }, { threshold: 0.3 });
+    }, { threshold: 0.28 });
     fio.observe(fadeout);
   }
+
 })();
