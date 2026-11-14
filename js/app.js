@@ -288,4 +288,17 @@
     fio.observe(fadeout);
   }
 
+  /* ── Auto-pause video when scrolled out of view ──────── */
+  var penutupVideo = document.getElementById("penutupVideo");
+  if (penutupVideo && "IntersectionObserver" in window) {
+    var vio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting && !penutupVideo.paused) {
+          penutupVideo.pause();
+        }
+      });
+    }, { threshold: 0.1 });
+    vio.observe(penutupVideo);
+  }
+
 })();

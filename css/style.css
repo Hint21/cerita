@@ -680,6 +680,33 @@ button { font: inherit; cursor: pointer; border: 0; background: none; color: inh
   pointer-events: none; z-index: 0;
   white-space: nowrap; user-select: none;
 }
+.end-video-wrap {
+  margin: 36px auto 0;
+  max-width: 340px;
+  width: 100%;
+  position: relative;
+  border-radius: 3px;
+  overflow: hidden;
+  box-shadow: 0 40px 100px -30px rgba(0,0,0,.92), 0 0 50px rgba(13,18,32,.5);
+  opacity: 0;
+  transform: translateY(24px) scale(0.97);
+  transition: opacity 1.4s var(--ease-slow), transform 1.4s var(--ease-slow);
+}
+.end-video-wrap.is-visible {
+  opacity: 1;
+  transform: none;
+}
+.end-video {
+  width: 100%;
+  aspect-ratio: 9/16;
+  max-height: 72vh;
+  display: block;
+  object-fit: cover;
+  background: #020204;
+  border-radius: 3px;
+  outline: none;
+}
+
 .img-single { margin-top: 36px; }
 .img-single img { width: 100%; border-radius: 1px; }
 .img-single--final img {
