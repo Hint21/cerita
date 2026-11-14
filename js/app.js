@@ -559,7 +559,7 @@
 
   /* ── WhatsApp redirect config (isi nomor format internasional tanpa +) ── */
   var WHATSAPP_NUMBER = "6285213208570";
-  var WHATSAPP_MESSAGE = "selamat tinggal, ya. 🤍";
+  var WHATSAPP_MESSAGE = "selamat tinggal, ya.";
   var whatsappOpened = false;
 
   function openWhatsAppOnce() {
