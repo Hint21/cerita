@@ -84,7 +84,8 @@
     .then(function (r) { return r.json(); })
     .then(function (data) {
       manifest = data || [];
-      photoList = manifest.filter(function (m) { return m.kind === "photo"; });
+      // img25 & img26 are near-duplicates from the same session; keep img25.
+      photoList = manifest.filter(function (m) { return m.kind === "photo" && m.file !== "img26.webp"; });
       renderSmall();
       renderYou();
       renderAwalFinal();
@@ -115,12 +116,12 @@
     var list = document.getElementById("smallList");
     if (!list) return;
     list.innerHTML = "";
-    var shots = manifest.filter(function (m) { return m.kind === "shot"; });
+    var shots = manifest.filter(function (m) { return m.kind === "shot"; }).slice(0, 8);
     shots.forEach(function (m) {
       var wrap = el("div", { "class": "small-item" });
       var img  = el("img", {
         src: "assets/images/" + m.file,
-        alt: "foto",
+        alt: "",
         loading: "lazy",
         decoding: "async"
       });
@@ -175,7 +176,7 @@
           var wrap = el("div", { "class": "you-item" });
           var img = el("img", {
             src: "assets/images/" + m.file,
-            alt: "foto",
+            alt: "",
             loading: "lazy",
             decoding: "async"
           });

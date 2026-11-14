@@ -15,4 +15,4 @@ Belum disertakan. Jika ingin menambahkan musik instrumental yang legal (mis. Pix
 Target: GitHub Pages (gratis). Repo: hint21/cerita -> https://hint21.github.io/cerita/
 
 ## Aset
-35 gambar terpilih dari 136 foto asli (25 foto + 10 screenshot), dikonversi ke WebP, lazy-loaded. Konteks foto tidak diketahui, sehingga tidak diberi caption.
+44 aset di manifest (31 foto + 12 tangkapan layar + 1 Roblox), dikonversi ke WebP, lazy-loaded. Pada versi final, 30 foto + 8 tangkapan layar digunakan di website (1 foto near-duplicate dan 4 tangkapan layar repetitif dikeluarkan dari penggunaan, file asli tetap aman). Konteks foto tidak diketahui, sehingga tidak diberi caption.
