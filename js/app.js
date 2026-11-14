@@ -143,29 +143,30 @@
     });
   }
 
-  /* ── Render: awal (first shot) + final (img07) ───────── */
+  /* ── Render: awal (roblox photo) + final (IMG-20260515-WA0036) ─ */
   function renderAwalFinal() {
     var awal   = document.getElementById("img-awal");
     var final  = document.getElementById("img-final");
+    var roblox = manifest.find(function (m) { return m.kind === "roblox"; });
     var shots  = manifest.filter(function (m) { return m.kind === "shot"; });
     var photos = manifest.filter(function (m) { return m.kind === "photo"; });
 
-    if (awal && shots.length) {
+    var awalItem = roblox || (shots.length ? shots[0] : null);
+    if (awal && awalItem) {
       var imgA = el("img", {
-        src: "assets/images/" + shots[0].file,
-        alt: "",
+        src: "assets/images/" + awalItem.file,
+        alt: "pertemuan pertama di roblox",
         loading: "lazy"
       });
       awal.appendChild(imgA);
-      // observe for scale-in
       if (io) io.observe(imgA);
     }
 
     if (final && photos.length) {
-      var pick = photos.find(function (m) { return m.file === "img07.webp"; }) || photos[0];
+      var pick = photos.find(function (m) { return m.orig === "IMG-20260515-WA0036.jpg"; }) || photos[0];
       var imgF = el("img", {
         src: "assets/images/" + pick.file,
-        alt: "",
+        alt: "hari ketika cerita ini selesai",
         loading: "lazy"
       });
       final.appendChild(imgF);

@@ -1,282 +1,310 @@
 [
  {
   "file": "img01.webp",
-  "kind": "photo",
+  "kind": "roblox",
   "orig": "Gemini_Generated_Image_ifwa2bifwa2bifwa.jpeg",
-  "w": 1200,
-  "h": 612,
-  "blur": 1163.2
+  "w": 1442,
+  "h": 736
  },
  {
   "file": "img02.webp",
   "kind": "photo",
-  "orig": "IMG_20260803_054358_478.jpg",
-  "w": 900,
-  "h": 1200,
-  "blur": 1087.3
+  "orig": "IMG-20260515-WA0036.jpg",
+  "w": 1200,
+  "h": 1600
  },
  {
   "file": "img03.webp",
   "kind": "photo",
-  "orig": "IMG_20261020_180645_915_1.jpg",
-  "w": 675,
-  "h": 1200,
-  "blur": 935.5
+  "orig": "IMG-20260528-WA0000.jpg",
+  "w": 576,
+  "h": 1024
  },
  {
   "file": "img04.webp",
   "kind": "photo",
-  "orig": "IMG_20261020_180645_884.jpg",
-  "w": 675,
-  "h": 1200,
-  "blur": 924.1
+  "orig": "IMG-20260603-WA0003.jpg",
+  "w": 576,
+  "h": 1024
  },
  {
   "file": "img05.webp",
   "kind": "photo",
-  "orig": "IMG-20260909-WA0023.jpg",
-  "w": 554,
-  "h": 1200,
-  "blur": 901.9
+  "orig": "IMG-20260620-WA0046.jpg",
+  "w": 576,
+  "h": 1024
  },
  {
   "file": "img06.webp",
   "kind": "photo",
-  "orig": "IMG-20260712-WA0012.jpg",
-  "w": 900,
-  "h": 1200,
-  "blur": 889.1
+  "orig": "IMG-20260703-WA0003.jpg",
+  "w": 576,
+  "h": 1024
  },
  {
   "file": "img07.webp",
   "kind": "photo",
-  "orig": "IMG-20260515-WA0036.jpg",
-  "w": 900,
-  "h": 1200,
-  "blur": 867.3
+  "orig": "IMG_20260710_232813_360.jpg",
+  "w": 800,
+  "h": 600
  },
  {
   "file": "img08.webp",
   "kind": "photo",
-  "orig": "IMG_20261020_180645_916_2.jpg",
-  "w": 675,
-  "h": 1200,
-  "blur": 825.8
+  "orig": "IMG_20260710_233032_037.jpg",
+  "w": 377,
+  "h": 1132
  },
  {
   "file": "img09.webp",
   "kind": "photo",
-  "orig": "IMG_20261020_180648_551_3.jpg",
-  "w": 675,
-  "h": 1200,
-  "blur": 811.7
+  "orig": "IMG-20260712-WA0012.jpg",
+  "w": 1200,
+  "h": 1600
  },
  {
   "file": "img10.webp",
   "kind": "photo",
-  "orig": "IMG_20261020_180649_585_6.jpg",
-  "w": 675,
-  "h": 1200,
-  "blur": 720.2
+  "orig": "IMG-20260717-WA0008.jpg",
+  "w": 1600,
+  "h": 1200
  },
  {
   "file": "img11.webp",
   "kind": "photo",
-  "orig": "IMG_20261020_180649_233_5.jpg",
-  "w": 675,
-  "h": 1200,
-  "blur": 696.9
+  "orig": "IMG-20260724-WA0026.jpg",
+  "w": 1600,
+  "h": 1200
  },
  {
   "file": "img12.webp",
   "kind": "photo",
-  "orig": "IMG_20261020_180649_590_7.jpg",
-  "w": 675,
-  "h": 1200,
-  "blur": 691.7
+  "orig": "IMG-20260802-WA0002.jpg",
+  "w": 576,
+  "h": 1024
  },
  {
   "file": "img13.webp",
   "kind": "photo",
-  "orig": "IMG-20261022-WA0027.jpg",
-  "w": 1200,
-  "h": 900,
-  "blur": 677.1
+  "orig": "IMG_20260803_054358_478.jpg",
+  "w": 1080,
+  "h": 1440
  },
  {
   "file": "img14.webp",
   "kind": "photo",
-  "orig": "IMG_20261020_180648_855_4.jpg",
-  "w": 675,
-  "h": 1200,
-  "blur": 676.2
+  "orig": "IMG-20260805-WA0020.jpg",
+  "w": 1200,
+  "h": 1600
  },
  {
   "file": "img15.webp",
   "kind": "photo",
-  "orig": "IMG-20260806-WA0006.jpg",
-  "w": 576,
-  "h": 1024,
-  "blur": 619.1
+  "orig": "IMG-20260806-WA0005.jpg",
+  "w": 1600,
+  "h": 900
  },
  {
   "file": "img16.webp",
   "kind": "photo",
-  "orig": "IMG_20261020_180650_149_8.jpg",
-  "w": 832,
-  "h": 468,
-  "blur": 565.8
+  "orig": "IMG-20260806-WA0006.jpg",
+  "w": 576,
+  "h": 1024
  },
  {
   "file": "img17.webp",
   "kind": "photo",
-  "orig": "IMG_20260710_232813_360.jpg",
-  "w": 800,
-  "h": 600,
-  "blur": 556.0
+  "orig": "IMG-20260817-WA0011.jpg",
+  "w": 1200,
+  "h": 1600
  },
  {
   "file": "img18.webp",
   "kind": "photo",
-  "orig": "IMG-20260808-WA0001.jpg",
+  "orig": "IMG-20260819-WA0028.jpg",
   "w": 576,
-  "h": 1024,
-  "blur": 548.3
+  "h": 768
  },
  {
   "file": "img19.webp",
   "kind": "photo",
-  "orig": "IMG-20260918-WA0026.jpg",
-  "w": 1200,
-  "h": 531,
-  "blur": 544.1
+  "orig": "IMG-20260831-WA0001.jpg",
+  "w": 1600,
+  "h": 1200
  },
  {
   "file": "img20.webp",
   "kind": "photo",
-  "orig": "IMG-20260817-WA0011.jpg",
-  "w": 900,
-  "h": 1200,
-  "blur": 543.8
+  "orig": "IMG-20260903-WA0044.jpg",
+  "w": 1600,
+  "h": 1200
  },
  {
   "file": "img21.webp",
   "kind": "photo",
-  "orig": "IMG_20261020_180650_316_9.jpg",
-  "w": 832,
-  "h": 468,
-  "blur": 526.8
+  "orig": "IMG-20260909-WA0023.jpg",
+  "w": 739,
+  "h": 1600
  },
  {
   "file": "img22.webp",
   "kind": "photo",
-  "orig": "IMG_20261020_180650_709_10.jpg",
-  "w": 832,
-  "h": 468,
-  "blur": 506.8
+  "orig": "IMG-20260918-WA0026.jpg",
+  "w": 1600,
+  "h": 709
  },
  {
   "file": "img23.webp",
   "kind": "photo",
-  "orig": "IMG-20261028-WA0018.jpg",
-  "w": 900,
-  "h": 1200,
-  "blur": 496.5
+  "orig": "IMG-20260921-WA0017.jpg",
+  "w": 1600,
+  "h": 1200
  },
  {
   "file": "img24.webp",
   "kind": "photo",
-  "orig": "IMG_20261020_180650_938_11.jpg",
-  "w": 832,
-  "h": 468,
-  "blur": 489.8
+  "orig": "IMG-20261011-WA0133.jpg",
+  "w": 1600,
+  "h": 1200
  },
  {
   "file": "img25.webp",
   "kind": "photo",
-  "orig": "IMG_20260710_233032_037.jpg",
-  "w": 377,
-  "h": 1132,
-  "blur": 475.9
+  "orig": "IMG_20261020_180645_915_1.jpg",
+  "w": 824,
+  "h": 1464
  },
  {
   "file": "img26.webp",
-  "kind": "shot",
-  "orig": "Screenshot_20260614-181605.jpg",
-  "w": 532,
-  "h": 1200,
-  "blur": 1096.2
+  "kind": "photo",
+  "orig": "IMG_20261020_180648_551_3.jpg",
+  "w": 824,
+  "h": 1464
  },
  {
   "file": "img27.webp",
-  "kind": "shot",
-  "orig": "Screenshot_20260711-233353.jpg",
-  "w": 532,
-  "h": 1200,
-  "blur": 1032.1
+  "kind": "photo",
+  "orig": "IMG-20261021-WA0096.jpg",
+  "w": 901,
+  "h": 1600
  },
  {
   "file": "img28.webp",
-  "kind": "shot",
-  "orig": "Screenshot_20260929-195524.jpg",
-  "w": 532,
-  "h": 1200,
-  "blur": 924.1
+  "kind": "photo",
+  "orig": "IMG-20261022-WA0026.jpg",
+  "w": 1200,
+  "h": 1600
  },
  {
   "file": "img29.webp",
-  "kind": "shot",
-  "orig": "Screenshot_20260711-233339.jpg",
-  "w": 532,
-  "h": 1200,
-  "blur": 885.7
+  "kind": "photo",
+  "orig": "IMG-20261022-WA0027.jpg",
+  "w": 1600,
+  "h": 1200
  },
  {
   "file": "img30.webp",
-  "kind": "shot",
-  "orig": "Screenshot_20260711-233449.jpg",
-  "w": 532,
-  "h": 1200,
-  "blur": 840.3
+  "kind": "photo",
+  "orig": "IMG-20261025-WA0006.jpg",
+  "w": 901,
+  "h": 1600
  },
  {
   "file": "img31.webp",
-  "kind": "shot",
-  "orig": "Screenshot_20260730-144341.jpg",
-  "w": 532,
-  "h": 1200,
-  "blur": 724.9
+  "kind": "photo",
+  "orig": "IMG-20261028-WA0018.jpg",
+  "w": 1080,
+  "h": 1440
  },
  {
   "file": "img32.webp",
-  "kind": "shot",
-  "orig": "Screenshot_20260730-144453.jpg",
-  "w": 532,
-  "h": 1200,
-  "blur": 631.2
+  "kind": "photo",
+  "orig": "IMG-20261101-WA0045.jpg",
+  "w": 901,
+  "h": 1600
  },
  {
   "file": "img33.webp",
   "kind": "shot",
-  "orig": "Screenshot_20260711-233841.jpg",
+  "orig": "Screenshot_20260614-181605.jpg",
   "w": 532,
-  "h": 1200,
-  "blur": 498.3
+  "h": 1200
  },
  {
   "file": "img34.webp",
   "kind": "shot",
-  "orig": "Screenshot_20260830-001808.jpg",
+  "orig": "Screenshot_20260708-230028.jpg",
   "w": 532,
-  "h": 1200,
-  "blur": 482.6
+  "h": 1200
  },
  {
   "file": "img35.webp",
   "kind": "shot",
-  "orig": "Screenshot_20260708-230028.jpg",
+  "orig": "Screenshot_20260711-233339.jpg",
   "w": 532,
-  "h": 1200,
-  "blur": 480.0
+  "h": 1200
+ },
+ {
+  "file": "img36.webp",
+  "kind": "shot",
+  "orig": "Screenshot_20260711-233841.jpg",
+  "w": 532,
+  "h": 1200
+ },
+ {
+  "file": "img37.webp",
+  "kind": "shot",
+  "orig": "Screenshot_20260730-144341.jpg",
+  "w": 532,
+  "h": 1200
+ },
+ {
+  "file": "img38.webp",
+  "kind": "shot",
+  "orig": "Screenshot_20260802-143634.jpg",
+  "w": 532,
+  "h": 1200
+ },
+ {
+  "file": "img39.webp",
+  "kind": "shot",
+  "orig": "Screenshot_20260811-233834.jpg",
+  "w": 532,
+  "h": 1200
+ },
+ {
+  "file": "img40.webp",
+  "kind": "shot",
+  "orig": "Screenshot_20260814-031809.jpg",
+  "w": 532,
+  "h": 1200
+ },
+ {
+  "file": "img41.webp",
+  "kind": "shot",
+  "orig": "Screenshot_20260821-225348.jpg",
+  "w": 532,
+  "h": 1200
+ },
+ {
+  "file": "img42.webp",
+  "kind": "shot",
+  "orig": "Screenshot_20260830-001808.jpg",
+  "w": 532,
+  "h": 1200
+ },
+ {
+  "file": "img43.webp",
+  "kind": "shot",
+  "orig": "Screenshot_20260905-234723.jpg",
+  "w": 532,
+  "h": 1200
+ },
+ {
+  "file": "img44.webp",
+  "kind": "shot",
+  "orig": "Screenshot_20260929-195524.jpg",
+  "w": 532,
+  "h": 1200
  }
 ]
