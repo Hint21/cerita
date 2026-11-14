@@ -38,14 +38,19 @@
       <span class="ambient__orb ambient__orb--b"></span>
       <span class="ambient__orb ambient__orb--c"></span>
     </div>
+    <!-- subtle film grain (fixed) -->
+    <div class="grain" aria-hidden="true"></div>
 
     <main id="main">
 
       <!-- ══ OPENING ══════════════════════════════════════════ -->
       <section class="scene scene--opening" id="opening" data-scene="opening">
         <div class="opening-glow" aria-hidden="true"></div>
+        <div class="opening-texture" aria-hidden="true">
+          <img src="assets/images/img01.webp" alt="" loading="eager" decoding="async">
+        </div>
         <div class="scene__inner scene__inner--center">
-          <p class="opening__line opening__line--1">sebuah cerita yang pernah ada</p>
+          <p class="opening__line opening__line--1">sebuah cerita<br>yang pernah ada</p>
           <p class="opening__line opening__line--2">hai, Alifah.</p>
           <p class="opening__line opening__line--3">aku bikin sesuatu buat kamu.</p>
           <button class="btn-enter" id="btnEnter" type="button">masuk</button>
@@ -60,6 +65,7 @@
           <div class="awal__grid">
             <div class="awal__media" id="img-awal"></div>
             <div class="awal__text">
+              <p class="awal__kicker reveal">awal semuanya.</p>
               <p class="text reveal">awalnya kita cuma dua orang yang kebetulan ketemu di Roblox.</p>
               <p class="text text--soft reveal">username kamu: liifaw.</p>
             </div>
@@ -195,6 +201,10 @@
 
   <!-- FADE TO BLACK -->
   <div class="fade-black" id="fadeBlack" aria-hidden="true"></div>
+
+  <!-- AUDIO (optional: place assets/music/ambient.mp3 to enable) -->
+  <audio id="bgMusic" src="assets/music/ambient.mp3" preload="none" loop></audio>
+  <button class="music-ctrl" id="musicCtrl" type="button" hidden aria-label="musik" aria-pressed="false">♪</button>
 
   <script src="js/vendor/lenis.min.js"></script>
   <script src="js/app.js"></script>

@@ -120,8 +120,9 @@
       var wrap = el("div", { "class": "small-item" });
       var img  = el("img", {
         src: "assets/images/" + m.file,
-        alt: "",
-        loading: "lazy"
+        alt: "foto",
+        loading: "lazy",
+        decoding: "async"
       });
       wrap.appendChild(img);
       list.appendChild(wrap);
@@ -174,8 +175,9 @@
           var wrap = el("div", { "class": "you-item" });
           var img = el("img", {
             src: "assets/images/" + m.file,
-            alt: "",
-            loading: "lazy"
+            alt: "foto",
+            loading: "lazy",
+            decoding: "async"
           });
           wrap.appendChild(img);
           wrap.setAttribute("role", "button");
@@ -251,7 +253,8 @@
       var imgA = el("img", {
         src: "assets/images/" + awalItem.file,
         alt: "pertemuan pertama di roblox",
-        loading: "lazy"
+        loading: "lazy",
+        decoding: "async"
       });
       awal.appendChild(imgA);
       if (io) io.observe(imgA);
@@ -494,6 +497,101 @@
       });
     }, { threshold: 0.1 });
     vio.observe(penutupVideo);
+  }
+
+  /* ── Optional background music (graceful if file missing) ─ */
+  var bgMusic    = document.getElementById("bgMusic");
+  var musicCtrl  = document.getElementById("musicCtrl");
+  var musicOn    = false;
+  var musicMuted = false;
+  var musicFadeTimer = null;
+
+  function fadeMusicTo(target, ms) {
+    if (!bgMusic) return;
+    if (musicFadeTimer) clearInterval(musicFadeTimer);
+    var start = bgMusic.volume;
+    var steps = Math.max(1, Math.round(ms / 50));
+    var i = 0;
+    musicFadeTimer = setInterval(function () {
+      i++;
+      var t = i / steps;
+      bgMusic.volume = Math.max(0, Math.min(1, start + (target - start) * t));
+      if (i >= steps) {
+        clearInterval(musicFadeTimer);
+        musicFadeTimer = null;
+        bgMusic.volume = target;
+      }
+    }, 50);
+  }
+
+  function setMusicMuted(muted) {
+    musicMuted = muted;
+    if (!bgMusic) return;
+    if (muted) {
+      bgMusic.pause();
+      if (musicCtrl) { musicCtrl.classList.add("is-muted"); musicCtrl.setAttribute("aria-pressed", "false"); }
+    } else if (musicOn) {
+      bgMusic.play().catch(function () {});
+      if (musicCtrl) { musicCtrl.classList.remove("is-muted"); musicCtrl.setAttribute("aria-pressed", "true"); }
+    }
+  }
+
+  if (bgMusic && musicCtrl) {
+    bgMusic.volume = 0;
+    bgMusic.addEventListener("canplaythrough", function () {
+      musicCtrl.hidden = false;
+    }, { once: true });
+    bgMusic.addEventListener("error", function () {
+      musicCtrl.hidden = true;
+    }, { once: true });
+    try { bgMusic.load(); } catch (e) {}
+
+    musicCtrl.addEventListener("click", function () {
+      if (musicMuted) setMusicMuted(false);
+      else setMusicMuted(true);
+    });
+
+    function startMusic() {
+      if (!musicOn) {
+        musicOn = true;
+        bgMusic.play().then(function () {
+          fadeMusicTo(0.32, 2000);
+          musicCtrl.hidden = false;
+          musicCtrl.setAttribute("aria-pressed", "true");
+        }).catch(function () {
+          musicOn = false;
+        });
+      }
+    }
+    window.__startMusic = startMusic;
+
+    var fadeout = document.getElementById("fadeout");
+    if (fadeout && "IntersectionObserver" in window) {
+      var mio = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) fadeMusicTo(0, 2500);
+        });
+      }, { threshold: 0.3 });
+      mio.observe(fadeout);
+    }
+
+    if (penutupVideo) {
+      penutupVideo.addEventListener("play", function () {
+        if (musicOn && !musicMuted) fadeMusicTo(0.06, 600);
+      });
+      penutupVideo.addEventListener("pause", function () {
+        if (musicOn && !musicMuted) fadeMusicTo(0.32, 900);
+      });
+      penutupVideo.addEventListener("ended", function () {
+        if (musicOn && !musicMuted) fadeMusicTo(0.32, 900);
+      });
+    }
+  }
+
+  if (btnEnter) {
+    btnEnter.addEventListener("click", function () {
+      if (typeof window.__startMusic === "function") window.__startMusic();
+    });
   }
 
 })();
