@@ -78,16 +78,23 @@
 
   /* ── Asset manifest ──────────────────────────────────── */
   var manifest = [];
+  var photoList = [];
+
   fetch("assets/images/manifest.json")
     .then(function (r) { return r.json(); })
     .then(function (data) {
       manifest = data || [];
+      photoList = manifest.filter(function (m) { return m.kind === "photo"; });
       renderSmall();
       renderYou();
       renderAwalFinal();
+      renderLetter();
       initReveals();
     })
-    .catch(function () { initReveals(); });
+    .catch(function () {
+      renderLetter();
+      initReveals();
+    });
 
   /* ── DOM helpers ─────────────────────────────────────── */
   function el(tag, attrs) {
@@ -99,10 +106,15 @@
     return e;
   }
 
+  function padZero(n) {
+    return n < 10 ? "0" + n : "" + n;
+  }
+
   /* ── Render: hal-hal kecil (screenshots → .small-item) ─ */
   function renderSmall() {
     var list = document.getElementById("smallList");
     if (!list) return;
+    list.innerHTML = "";
     var shots = manifest.filter(function (m) { return m.kind === "shot"; });
     shots.forEach(function (m) {
       var wrap = el("div", { "class": "small-item" });
@@ -116,43 +128,126 @@
     });
   }
 
-  /* ── Render: tentang kamu (photos → .you-item) ────────── */
+  /* ── Render: tentang kamu (editorial storytelling photo layout) ── */
   function renderYou() {
     var gal = document.getElementById("youGallery");
     if (!gal) return;
-    var photos = manifest.filter(function (m) { return m.kind === "photo"; });
-    photos.forEach(function (m) {
-      var wrap = el("div", { "class": "you-item" });
-      var img  = el("img", {
-        src: "assets/images/" + m.file,
-        alt: "",
-        loading: "lazy"
-      });
-      wrap.addEventListener("click", function () { openViewer("assets/images/" + m.file); });
-      wrap.setAttribute("role", "button");
-      wrap.setAttribute("tabindex", "0");
-      wrap.setAttribute("aria-label", "lihat foto");
-      wrap.addEventListener("keydown", function (e) {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          openViewer("assets/images/" + m.file);
-        }
-      });
-      wrap.appendChild(img);
-      gal.appendChild(wrap);
+    gal.innerHTML = "";
+
+    var photos = photoList;
+    if (!photos.length) return;
+
+    // Editorial layout pattern rhythm:
+    // Hero -> Pair-L -> Trio -> Single -> Pair-R -> Cinema ->
+    // Pair-L -> Trio -> Hero-Tall -> Pair-R -> Single -> Trio -> Cinema ->
+    // Pair-L -> Trio -> Pair-R -> Hero
+    var pattern = [
+      { type: "hero",      count: 1, cls: "editorial-hero" },
+      { type: "pair-l",    count: 2, cls: "editorial-pair editorial-pair--left" },
+      { type: "trio",      count: 3, cls: "editorial-trio" },
+      { type: "single",    count: 1, cls: "editorial-single" },
+      { type: "pair-r",    count: 2, cls: "editorial-pair editorial-pair--right" },
+      { type: "cinema",    count: 1, cls: "editorial-cinema" },
+      { type: "pair-l",    count: 2, cls: "editorial-pair editorial-pair--left" },
+      { type: "trio",      count: 3, cls: "editorial-trio" },
+      { type: "hero-tall", count: 1, cls: "editorial-hero editorial-hero--tall" },
+      { type: "pair-r",    count: 2, cls: "editorial-pair editorial-pair--right" },
+      { type: "single",    count: 1, cls: "editorial-single" },
+      { type: "trio",      count: 3, cls: "editorial-trio" },
+      { type: "cinema",    count: 1, cls: "editorial-cinema" },
+      { type: "pair-l",    count: 2, cls: "editorial-pair editorial-pair--left" },
+      { type: "trio",      count: 3, cls: "editorial-trio" },
+      { type: "pair-r",    count: 2, cls: "editorial-pair editorial-pair--right" },
+      { type: "hero",      count: 1, cls: "editorial-hero" }
+    ];
+
+    var pIdx = 0;
+    var bIdx = 0;
+    while (pIdx < photos.length) {
+      var pat = pattern[bIdx % pattern.length];
+      var count = Math.min(pat.count, photos.length - pIdx);
+      var block = el("div", { "class": pat.cls });
+
+      for (var i = 0; i < count; i++) {
+        (function (globalIdx) {
+          var m = photos[globalIdx];
+          var wrap = el("div", { "class": "you-item" });
+          var img = el("img", {
+            src: "assets/images/" + m.file,
+            alt: "",
+            loading: "lazy"
+          });
+          wrap.appendChild(img);
+          wrap.setAttribute("role", "button");
+          wrap.setAttribute("tabindex", "0");
+          wrap.setAttribute("aria-label", "lihat foto " + (globalIdx + 1));
+
+          wrap.addEventListener("click", function () {
+            openViewer(globalIdx);
+          });
+          wrap.addEventListener("keydown", function (e) {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              openViewer(globalIdx);
+            }
+          });
+
+          block.appendChild(wrap);
+        })(pIdx + i);
+      }
+
+      gal.appendChild(block);
+      pIdx += count;
+      bIdx++;
+    }
+  }
+
+  /* ── Render: surat utama (23 paragraf asli) ──────────── */
+  function renderLetter() {
+    var letterEl = document.getElementById("letterText");
+    if (!letterEl || letterEl.children.length > 0) return;
+
+    var paragraphs = [
+      "yaudah kalau emang kamu dah mutusin gitu, aku terima. ini emang salah aku yang masih belum bisa jauhin hal hal yang nggak kamu suka, wajar banget kamu marah, wajar kamu nggak suka, aku yang salah sayang. aku juga nggak mau banyak alasan lagi karena aku tau dari sisi kamu itu pasti sakit, apalagi kalau hal yang sama udah pernah kamu bilang tapi aku masih ngelakuin lagi.",
+      "maaf yaa udah bikin kamu sakit hati ama semua kelakuan aku, maaf yaa belum bisa jadi cowok yang kamu impiin, maaf juga karena selama ini kamu harus banyak maklumin aku. kamu dah baik banget kok, aku aja yang ngelunjak.",
+      "mungkin aku juga selama ini terlalu mikirin kalau aku udah jujur ama kamu, tapi aku lupa kalau jujur setelah ngelakuin sesuatu juga nggak bikin kamu jadi nggak sakit hati.",
+      "jujur berat banget buat aku nge iyain kemauan kamu ini, aku masih sayang banget ama kamu, masih pengen sama kamu juga. tapi ini bukan pertama kali kamu minta udahan, jadi daripada kamu makan hati mulu ama kelakuan aku, kayaknya emang lebih baik sampai sini aja.",
+      "aku nggak mau juga kalau setiap ada masalah kamu harus sampai ngerasa capek dan sakit hati terus. mungkin emang aku belum bisa jadi orang yang kamu butuhin.",
+      "aku juga minta maaf kalau selama sama aku kamu pernah ngerasa sendirian, ngerasa nggak didengerin, atau ngerasa harus ngejelasin hal yang sama berkali kali.",
+      "aku sadar masih banyak kurangnya aku dan mungkin selama ini aku nggak sadar kalau beberapa hal yang aku anggap sepele ternyata bisa bikin kamu sakit hati.",
+      "makasih yaa atas semua hal yang udah kamu kasih ke aku.",
+      "makasih karena udah nemenin aku selama 4 bulan pdkt dan 3 bulan pacaran ini.",
+      "aku nggak nyangka yang awalnya cuman temen roblox, yang awalnya kamu manggil ayah sampai akhirnya manggil sayang. lucu yaa kalau diingat ingat.",
+      "siapa sih yang bakal nyangka orang yang awalnya aku kenal nggak sengaja di roblox, yang aku kira paling cuman ketemu di satu kali main doang ternyata bisa jadi orang yang benar benar aku sayang.",
+      "banyak banget hal kecil dari kita yang bakal aku inget nanti, dari ngobrol, main bareng, telfonan, cerita cerita, sampai hal hal random yang mungkin kelihatannya biasa aja tapi buat aku tetap berarti.",
+      "aku nggak mau rasa kangen aku malah jadi alasan buat maksa kamu tetap bertahan.",
+      "kalau nanti aku udah bukan jadi orang yang kamu sayang lagi, kamu tetap hubungin aku yaa kalau perlu bantuan, bakal aku usahain bantu kok.",
+      "kamu tetap semangat yaa ngejar impian kamu, aku doain kamu bisa masuk ke univ yang kamu impikan, bisa masuk ke jurusan yang kamu suka.",
+      "kamu udah mau lulus sayang, yang semangat yaa belajarnya. nanti kuliahnya juga yang semangat, jangan malas malasan mulu, ngeluh boleh, capek boleh, istirahat juga boleh, asal jangan nyerah dan tugasnya tetap dikerjain.",
+      "aku juga doain kamu bisa dapetin semua yang kamu mau.",
+      "mudah mudahan nanti kamu nemuin cowok yang benar benar bisa ngejauhin hal hal yang nggak kamu suka, yang bisa lebih ngerti kamu dan bisa bikin kamu lebih bahagia.",
+      "maaf yaa sayang atas semua yang udah aku lakuin, maaf udah bikin kamu sakit hati, maaf udah bikin kamu capek dan harus berusaha memaklumi aku selama ini.",
+      "aku benar benar sayang kamu kok.",
+      "makasih yaa udah pernah nemenin aku, udah pernah milih aku, dan udah pernah jadi bagian dari hidup aku.",
+      "jaga diri baik baik yaa sayang, semoga kamu baik baik aja dan semoga semua yang kamu impiin bisa tercapai.",
+      "makasih buat semuanya 🤍"
+    ];
+
+    paragraphs.forEach(function (text) {
+      var p = document.createElement("p");
+      p.textContent = text;
+      letterEl.appendChild(p);
     });
   }
 
-  /* ── Render: awal (roblox photo) + final (IMG-20260515-WA0036) ─ */
+  /* ── Render: awal (roblox photo) ──────────────────────── */
   function renderAwalFinal() {
     var awal   = document.getElementById("img-awal");
-    var final  = document.getElementById("img-final");
     var roblox = manifest.find(function (m) { return m.kind === "roblox"; });
     var shots  = manifest.filter(function (m) { return m.kind === "shot"; });
-    var photos = manifest.filter(function (m) { return m.kind === "photo"; });
 
     var awalItem = roblox || (shots.length ? shots[0] : null);
-    if (awal && awalItem) {
+    if (awal && awalItem && !awal.children.length) {
       var imgA = el("img", {
         src: "assets/images/" + awalItem.file,
         alt: "pertemuan pertama di roblox",
@@ -161,31 +256,50 @@
       awal.appendChild(imgA);
       if (io) io.observe(imgA);
     }
+  }
 
-    if (final && photos.length) {
-      var pick = photos.find(function (m) { return m.orig === "IMG-20260515-WA0036.jpg"; }) || photos[0];
-      var imgF = el("img", {
-        src: "assets/images/" + pick.file,
-        alt: "hari ketika cerita ini selesai",
-        loading: "lazy"
-      });
-      final.appendChild(imgF);
-      if (io) io.observe(imgF);
+  /* ── Photo viewer (Lightbox) ─────────────────────────── */
+  var viewer        = document.getElementById("viewer");
+  var viewerImg     = document.getElementById("viewerImg");
+  var viewerCounter = document.getElementById("viewerCounter");
+  var viewerClose   = document.getElementById("viewerClose");
+  var viewerPrev    = document.getElementById("viewerPrev");
+  var viewerNext    = document.getElementById("viewerNext");
+  var viewerStage   = document.getElementById("viewerStage");
+  var currentViewerIdx = 0;
+
+  function showViewerPhoto(idx) {
+    if (!photoList || !photoList.length || !viewerImg) return;
+    currentViewerIdx = (idx + photoList.length) % photoList.length;
+    var item = photoList[currentViewerIdx];
+    var src = "assets/images/" + item.file;
+
+    // Smooth image transition
+    viewerImg.style.opacity = "0.2";
+    viewerImg.style.transform = "scale(0.97)";
+
+    var loader = new Image();
+    loader.onload = function () {
+      viewerImg.src = src;
+      viewerImg.style.opacity = "1";
+      viewerImg.style.transform = "scale(1)";
+    };
+    loader.src = src;
+
+    if (viewerCounter) {
+      viewerCounter.textContent = padZero(currentViewerIdx + 1) + " / " + padZero(photoList.length);
     }
   }
 
-  /* ── Photo viewer ────────────────────────────────────── */
-  var viewer      = document.getElementById("viewer");
-  var viewerImg   = document.getElementById("viewerImg");
-  var viewerClose = document.getElementById("viewerClose");
-
-  function openViewer(src) {
+  function openViewer(idx) {
     if (!viewer || !viewerImg) return;
-    viewerImg.src = src;
+    var targetIdx = typeof idx === "number" ? idx : 0;
     viewer.hidden = false;
-    viewerClose.focus();
+    showViewerPhoto(targetIdx);
+    if (viewerClose) viewerClose.focus();
     document.body.style.overflow = "hidden";
   }
+
   function closeViewer() {
     if (!viewer) return;
     viewer.hidden = true;
@@ -193,14 +307,66 @@
     document.body.style.overflow = "";
   }
 
+  function prevPhoto() {
+    showViewerPhoto(currentViewerIdx - 1);
+  }
+
+  function nextPhoto() {
+    showViewerPhoto(currentViewerIdx + 1);
+  }
+
   if (viewerClose) viewerClose.addEventListener("click", closeViewer);
-  if (viewer) {
-    viewer.addEventListener("click", function (e) {
-      if (e.target === viewer) closeViewer();
+  if (viewerPrev) {
+    viewerPrev.addEventListener("click", function (e) {
+      e.stopPropagation();
+      prevPhoto();
     });
   }
+  if (viewerNext) {
+    viewerNext.addEventListener("click", function (e) {
+      e.stopPropagation();
+      nextPhoto();
+    });
+  }
+
+  if (viewer) {
+    viewer.addEventListener("click", function (e) {
+      // close when clicking backdrop or stage area outside image
+      if (e.target === viewer || e.target === viewerStage) {
+        closeViewer();
+      }
+    });
+
+    // Touch swipe navigation for mobile
+    var touchStartX = 0;
+    var touchStartY = 0;
+    viewer.addEventListener("touchstart", function (e) {
+      if (e.touches && e.touches[0]) {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+      }
+    }, { passive: true });
+
+    viewer.addEventListener("touchend", function (e) {
+      if (!e.changedTouches || !e.changedTouches[0]) return;
+      var dx = e.changedTouches[0].clientX - touchStartX;
+      var dy = e.changedTouches[0].clientY - touchStartY;
+      if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+        if (dx < 0) nextPhoto();
+        else prevPhoto();
+      }
+    }, { passive: true });
+  }
+
   document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape" && viewer && !viewer.hidden) closeViewer();
+    if (!viewer || viewer.hidden) return;
+    if (e.key === "Escape") {
+      closeViewer();
+    } else if (e.key === "ArrowLeft") {
+      prevPhoto();
+    } else if (e.key === "ArrowRight") {
+      nextPhoto();
+    }
   });
 
   /* ── Intersection Observer (reveal system) ───────────── */

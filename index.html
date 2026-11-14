@@ -180,10 +180,17 @@
     </main>
   </div>
 
-  <!-- PHOTO VIEWER -->
-  <div class="viewer" id="viewer" hidden>
-    <button class="viewer__close" id="viewerClose" type="button" aria-label="tutup">✕</button>
-    <img class="viewer__img" id="viewerImg" alt="">
+  <!-- PHOTO VIEWER (LIGHTBOX) -->
+  <div class="viewer" id="viewer" hidden role="dialog" aria-modal="true" aria-label="penampil foto">
+    <div class="viewer__topbar">
+      <span class="viewer__counter" id="viewerCounter">01 / 31</span>
+      <button class="viewer__close" id="viewerClose" type="button" aria-label="tutup penampil">✕</button>
+    </div>
+    <button class="viewer__nav viewer__nav--prev" id="viewerPrev" type="button" aria-label="foto sebelumnya">‹</button>
+    <div class="viewer__stage" id="viewerStage">
+      <img class="viewer__img" id="viewerImg" alt="" draggable="false">
+    </div>
+    <button class="viewer__nav viewer__nav--next" id="viewerNext" type="button" aria-label="foto berikutnya">›</button>
   </div>
 
   <!-- FADE TO BLACK -->
