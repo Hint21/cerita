@@ -8,13 +8,21 @@
   var gateErr = document.getElementById("gateErr");
   var site = document.getElementById("site");
 
+  function readSession(key) {
+    try { return sessionStorage.getItem(key); } catch (e) { return null; }
+  }
+  function writeSession(key, val) {
+    try { sessionStorage.setItem(key, val); } catch (e) {}
+  }
+
   function unlock() {
     if (gate) gate.style.display = "none";
     if (site) site.hidden = false;
-    try { sessionStorage.setItem("entered", "1"); } catch (e) {}
+    writeSession("entered", "1");
+    initReveals();
   }
 
-  if (sessionStorage.getItem("entered") === "1") {
+  if (readSession("entered") === "1") {
     unlock();
   }
 
@@ -31,17 +39,20 @@
     });
   }
 
+  // Lenis
   var lenis = null;
   if (typeof Lenis === "function") {
-    lenis = new Lenis({ duration: 1.1, smoothWheel: true, touchMultiplier: 1.3 });
-    function raf(t) { lenis.raf(t); requestAnimationFrame(raf); }
-    requestAnimationFrame(raf);
+    try {
+      lenis = new Lenis({ duration: 1.1, smoothWheel: true, touchMultiplier: 1.3 });
+      function raf(t) { lenis.raf(t); requestAnimationFrame(raf); }
+      requestAnimationFrame(raf);
+    } catch (e) { lenis = null; }
   }
 
   function scrollToEl(el) {
     if (!el) return;
-    if (lenis) lenis.scrollTo(el, { duration: 1.2 });
-    else el.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (lenis) { try { lenis.scrollTo(el, { duration: 1.2 }); return; } catch (e) {} }
+    el.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   var btnEnter = document.getElementById("btnEnter");
@@ -51,6 +62,7 @@
     });
   }
 
+  // Manifest
   var manifest = [];
   fetch("assets/images/manifest.json")
     .then(function (r) { return r.json(); })
@@ -59,8 +71,9 @@
       renderSmall();
       renderYou();
       renderAwalFinal();
+      initReveals();
     })
-    .catch(function () { /* no manifest, skip images */ });
+    .catch(function () { initReveals(); });
 
   function el(tag, attrs) {
     var e = document.createElement(tag);
@@ -78,7 +91,6 @@
       var img = el("img", { src: "assets/images/" + m.file, alt: "", loading: "lazy" });
       list.appendChild(img);
     });
-    observeReveal(list.querySelectorAll("img"));
   }
 
   function renderYou() {
@@ -105,6 +117,7 @@
     }
   }
 
+  // Viewer
   var viewer = document.getElementById("viewer");
   var viewerImg = document.getElementById("viewerImg");
   var viewerClose = document.getElementById("viewerClose");
@@ -119,23 +132,59 @@
   }
   if (viewerClose) viewerClose.addEventListener("click", closeViewer);
   if (viewer) viewer.addEventListener("click", function (e) { if (e.target === viewer) closeViewer(); });
-
-  function observeReveal(nodes) {
-    if (!("IntersectionObserver" in window)) {
-      nodes.forEach(function (n) { n.classList.add("is-visible"); });
-      return;
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") {
+      if (viewer && !viewer.hidden) closeViewer();
     }
-    var io = new IntersectionObserver(function (entries) {
+  });
+
+  // Reveal system
+  var io = null;
+  if ("IntersectionObserver" in window) {
+    io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (entry.isIntersecting) {
           entry.target.classList.add("is-visible");
           io.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.15 });
-    nodes.forEach(function (n) { io.observe(n); });
+    }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
+  }
+  function revealAll(selector) {
+    var nodes = document.querySelectorAll(selector);
+    nodes.forEach(function (n) {
+      if (io) io.observe(n);
+      else n.classList.add("is-visible");
+    });
   }
 
+  function initReveals() {
+    // opening ready
+    var opening = document.getElementById("opening");
+    if (opening) setTimeout(function () { opening.classList.add("is-ready"); }, 200);
+
+    // timeline items
+    revealAll(".timeline__item");
+    // me lines
+    revealAll(".me-line");
+    // letter paragraphs
+    revealAll(".letter p");
+    // thanks
+    revealAll(".thanks-lines p");
+    // fade lines
+    revealAll(".fade-line");
+    revealAll(".fade-final");
+    // small images
+    revealAll(".small-list img");
+    // you gallery
+    revealAll(".you-gallery img");
+    // generic reveal
+    revealAll(".reveal");
+  }
+
+  // Opening scene ready on load even without unlock? site hidden until unlock; initReveals called in unlock.
+
+  // Letter text
   var letterEl = document.getElementById("letterText");
   if (letterEl) {
     var paragraphs = [
@@ -169,5 +218,16 @@
     });
   }
 
-  document.addEventListener("contextmenu", function (e) { e.preventDefault(); });
+  // Fade to black on fadeout section
+  var fadeBlack = document.getElementById("fadeBlack");
+  var fadeout = document.getElementById("fadeout");
+  if (fadeout && fadeBlack && "IntersectionObserver" in window) {
+    var fio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) fadeBlack.classList.add("is-active");
+        else fadeBlack.classList.remove("is-active");
+      });
+    }, { threshold: 0.3 });
+    fio.observe(fadeout);
+  }
 })();

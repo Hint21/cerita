@@ -8,14 +8,16 @@
   <title>sebuah cerita yang pernah ada</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
   <div class="gate" id="gate" role="dialog" aria-modal="true" aria-label="akses">
+    <div class="gate__orb gate__orb--1" aria-hidden="true"></div>
+    <div class="gate__orb gate__orb--2" aria-hidden="true"></div>
     <div class="gate__inner">
-      <p class="gate__title">sebuah cerita yang pernah ada</p>
+      <p class="gate__title">sebuah cerita<br>yang pernah ada</p>
       <p class="gate__hint">masukkan tanggal yang kita mulai.</p>
       <form class="gate__form" id="gateForm" autocomplete="off">
         <input class="gate__input" id="gateInput" type="password" inputmode="numeric" maxlength="8" placeholder="ddmmyyyy" aria-label="password" autofocus>
@@ -26,10 +28,17 @@
   </div>
 
   <div class="site" id="site" hidden>
+    <div class="ambient" aria-hidden="true">
+      <span class="ambient__orb ambient__orb--a"></span>
+      <span class="ambient__orb ambient__orb--b"></span>
+      <span class="ambient__orb ambient__orb--c"></span>
+    </div>
+
     <main id="main">
 
-      <section class="scene scene--opening" id="opening">
-        <div class="scene__inner">
+      <!-- OPENING -->
+      <section class="scene scene--opening" id="opening" data-scene="opening">
+        <div class="scene__inner scene__inner--center">
           <p class="opening__line opening__line--1">sebuah cerita yang pernah ada</p>
           <p class="opening__line opening__line--2">hai, Alifah.</p>
           <p class="opening__line opening__line--3">aku bikin sesuatu buat kamu.</p>
@@ -37,72 +46,98 @@
         </div>
       </section>
 
-      <section class="scene scene--awal" id="awal">
+      <!-- AWAL CERITA -->
+      <section class="scene scene--awal" id="awal" data-scene="awal">
         <div class="scene__inner">
+          <p class="big-date big-date--bg" aria-hidden="true">06.05.2026</p>
           <p class="date">06.05.2026</p>
-          <p class="text">awalnya kita cuma dua orang yang kebetulan ketemu di Roblox.</p>
-          <p class="text text--soft">username kamu: liifaw.</p>
-          <div class="img-single" id="img-awal"></div>
+          <div class="awal__grid">
+            <div class="awal__media" id="img-awal"></div>
+            <div class="awal__text">
+              <p class="text">awalnya kita cuma dua orang yang kebetulan ketemu di Roblox.</p>
+              <p class="text text--soft">username kamu: liifaw.</p>
+            </div>
+          </div>
         </div>
       </section>
 
-      <section class="scene scene--timeline" id="timeline">
+      <!-- TIMELINE -->
+      <section class="scene scene--timeline" id="timeline" data-scene="timeline">
         <div class="scene__inner">
+          <p class="section-kicker">perjalanan</p>
           <ul class="timeline">
-            <li>
+            <li class="timeline__item">
+              <span class="timeline__node"></span>
               <span class="timeline__date">06.05.2026</span>
               <span class="timeline__label">pertama kali bertemu</span>
             </li>
-            <li>
+            <li class="timeline__item">
+              <span class="timeline__node"></span>
               <span class="timeline__date">setelahnya</span>
               <span class="timeline__label">mulai mengenal<br>mulai dekat<br>mulai punya banyak cerita</span>
             </li>
-            <li class="timeline__highlight">
+            <li class="timeline__item timeline__item--highlight">
+              <span class="timeline__node timeline__node--glow"></span>
               <span class="timeline__date">29.07.2026</span>
               <span class="timeline__label">hari ketika kita memilih untuk menjadi kita.</span>
+            </li>
+            <li class="timeline__item">
+              <span class="timeline__node"></span>
+              <span class="timeline__date">15.11.2026</span>
+              <span class="timeline__label">hari ketika cerita ini selesai.</span>
             </li>
           </ul>
         </div>
       </section>
 
-      <section class="scene scene--small" id="small">
+      <!-- HAL-HAL KECIL -->
+      <section class="scene scene--small" id="small" data-scene="small">
         <div class="scene__inner">
+          <p class="section-kicker">kenangan</p>
           <p class="section-title">hal-hal kecil</p>
           <p class="text text--soft">yang mungkin kelihatannya biasa aja, tapi buat aku tetap berarti.</p>
           <div class="small-list" id="smallList"></div>
         </div>
       </section>
 
-      <section class="scene scene--you" id="you">
+      <!-- TENTANG KAMU -->
+      <section class="scene scene--you" id="you" data-scene="you">
         <div class="scene__inner">
+          <p class="section-kicker">untuk kamu</p>
           <p class="section-title">tentang kamu</p>
           <div class="you-gallery" id="youGallery"></div>
         </div>
       </section>
 
-      <section class="scene scene--me" id="me">
-        <div class="scene__inner">
-          <p class="section-title">tentang aku</p>
-          <div class="prose">
-            <p>aku mengakui kesalahan.</p>
-            <p>aku tidak mencari alasan.</p>
-            <p>aku sadar, kejujuran setelah melakukan sesuatu tetap bisa menyakiti.</p>
-            <p>aku sadar ada saat-saat kamu mungkin merasa sendirian, merasa tidak didengarkan, atau harus menjelaskan hal yang sama berkali-kali.</p>
-            <p>itu bukan salah kamu. itu kurangnya aku.</p>
+      <!-- TENTANG AKU -->
+      <section class="scene scene--me" id="me" data-scene="me">
+        <div class="scene__inner scene__inner--narrow">
+          <p class="section-kicker">tentang aku</p>
+          <div class="me-lines">
+            <p class="me-line">aku mengakui kesalahan.</p>
+            <p class="me-line">aku nggak mau cari alasan.</p>
+            <p class="me-line">aku sadar, kejujuran setelah melakukan sesuatu tetap bisa menyakiti.</p>
+            <p class="me-line">aku sadar ada saat-saat kamu mungkin merasa sendirian.</p>
+            <p class="me-line">merasa nggak didengarkan.</p>
+            <p class="me-line">atau harus menjelaskan hal yang sama berkali-kali.</p>
+            <p class="me-line">itu bukan salah kamu.</p>
+            <p class="me-line">itu kurangnya aku.</p>
           </div>
         </div>
       </section>
 
-      <section class="scene scene--letter" id="letter">
-        <div class="scene__inner">
-          <p class="section-title">yang tidak sempat aku katakan</p>
+      <!-- SURAT -->
+      <section class="scene scene--letter" id="letter" data-scene="letter">
+        <div class="scene__inner scene__inner--letter">
+          <p class="section-kicker">yang tidak sempat aku katakan</p>
           <div class="letter" id="letterText"></div>
         </div>
       </section>
 
-      <section class="scene scene--thanks" id="thanks">
-        <div class="scene__inner">
-          <div class="prose prose--center">
+      <!-- TERIMA KASIH -->
+      <section class="scene scene--thanks" id="thanks" data-scene="thanks">
+        <div class="scene__inner scene__inner--center">
+          <div class="thanks-lines">
             <p>makasih yaa, sayang.</p>
             <p>makasih udah pernah nemenin aku.</p>
             <p>makasih udah pernah milih aku.</p>
@@ -111,18 +146,21 @@
         </div>
       </section>
 
-      <section class="scene scene--endday" id="endday">
-        <div class="scene__inner">
+      <!-- HARI KETIKA CERITA INI SELESAI -->
+      <section class="scene scene--endday" id="endday" data-scene="endday">
+        <div class="scene__inner scene__inner--center">
+          <p class="end-date" aria-hidden="true">15.11.2026</p>
           <p class="date">15.11.2026</p>
           <p class="text">hari ketika cerita ini selesai.</p>
           <div class="img-single img-single--final" id="img-final"></div>
         </div>
       </section>
 
-      <section class="scene scene--fadeout" id="fadeout">
+      <!-- FADE OUT -->
+      <section class="scene scene--fadeout" id="fadeout" data-scene="fadeout">
         <div class="scene__inner scene__inner--center">
-          <p class="fade-line">aku nggak tahu nanti kita bakal jadi apa setelah ini.</p>
-          <p class="fade-line">tapi aku tahu, aku pernah bahagia karena pernah mengenal kamu.</p>
+          <p class="fade-line">aku nggak tahu hidup bakal bawa kita ke mana setelah ini.</p>
+          <p class="fade-line">tapi aku bersyukur pernah mengenal kamu.</p>
           <p class="fade-line fade-line--small">jaga diri baik-baik yaa, sayang.</p>
           <p class="fade-line fade-line--small">semoga semua yang kamu impiin bisa tercapai.</p>
           <p class="fade-final">cerita ini selesai.</p>
@@ -136,6 +174,8 @@
     <button class="viewer__close" id="viewerClose" type="button" aria-label="tutup">✕</button>
     <img class="viewer__img" id="viewerImg" alt="">
   </div>
+
+  <div class="fade-black" id="fadeBlack" aria-hidden="true"></div>
 
   <script src="js/vendor/lenis.min.js"></script>
   <script src="js/app.js"></script>
