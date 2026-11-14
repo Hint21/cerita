@@ -568,18 +568,17 @@
     if (!fb || !fb.classList.contains("is-active")) return;
     whatsappOpened = true;
     setTimeout(function () {
-      var url = "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(WHATSAPP_MESSAGE);
+      var webUrl = "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(WHATSAPP_MESSAGE);
+      var appUrl = "whatsapp://send?phone=" + WHATSAPP_NUMBER + "&text=" + encodeURIComponent(WHATSAPP_MESSAGE);
       try {
-        // location.href di tab yang sama agar OS membuka app WhatsApp (bukan tab browser)
-        window.location.href = url;
+        // coba buka app WhatsApp langsung
+        window.location.href = appUrl;
+        // fallback ke web jika app tidak terbuka dalam 1.5s
+        setTimeout(function () {
+          window.location.href = webUrl;
+        }, 1500);
       } catch (e) {
-        try {
-          var a = document.createElement("a");
-          a.href = url;
-          document.body.appendChild(a);
-          a.click();
-          setTimeout(function () { try { document.body.removeChild(a); } catch (e2) {} }, 200);
-        } catch (e3) {}
+        try { window.location.href = webUrl; } catch (e2) {}
       }
     }, 1000);
   }
