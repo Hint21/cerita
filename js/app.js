@@ -527,7 +527,7 @@
           fadeTimer = setTimeout(function () {
             fadeBlack.classList.add("is-active");
             // tunggu fade (6.5s) + 1s, lalu buka WhatsApp sekali
-            setTimeout(openWhatsAppOnce, 7500);
+            setTimeout(openWhatsAppOnce, 3000);
           }, 16000);
         } else {
           // If user scrolls back up, cancel timer and restore visibility
@@ -551,7 +551,7 @@
         clearTimeout(fadeTimer);
         fadeTimer = setTimeout(function () {
           fadeBlack.classList.add("is-active");
-          setTimeout(openWhatsAppOnce, 7500);
+          setTimeout(openWhatsAppOnce, 3000);
         }, 18000);
       }
     });
